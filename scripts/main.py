@@ -6,6 +6,9 @@ import random
 
 delay = 0.1
 
+# Score
+score = 0
+high_score = 0
 
 # Set up the screen
 wn = turtle.Screen()
@@ -87,6 +90,15 @@ uiadd.write("SNAKE",font=(r'consolas', 30))
 uiadd.goto(350,190)
 uiadd.write("awesomelewis2007",font=(r'consolas', 10))
 
+# Pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 230)
+pen.write("Score: 0  High Score: 0", align="center", font=("Courier", 24, "normal"))
 
 # Functions
 def go_up():
@@ -146,35 +158,42 @@ while True:
         # Clear the segments list
         segments.clear()
 
+        # Reset the score
+        score = 0
+
+        # Reset the delay
+        delay = 0.1
+
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal")) 
+
+
     # Check for a collision with the food
     if head.distance(food) < 20:
         # Move the food to a random spot
         x = random.randint(-290, 290)
         y = random.randint(-290, 290)
-        shapexy = random.randint(1,3)
-        if shapexy == 1:
-            food.shape("square")
-        if shapexy == 2:
-            food.shape("triangle")
-        if shapexy == 3:
-            food.shape("circle")
-        colours = ["red","green","blue","gold"]
-        coloursxx = random.choice(colours)
-        food.color(coloursxx)
         food.goto(x,y)
 
         # Add a segment
         new_segment = turtle.Turtle()
         new_segment.speed(0)
         new_segment.shape("square")
-        new_segment.color("skyblue1")
+        new_segment.color("grey")
         new_segment.penup()
         segments.append(new_segment)
 
         # Shorten the delay
         delay -= 0.001
 
+        # Increase the score
+        score += 10
+
+        if score > high_score:
+            high_score = score
         
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal")) 
 
     # Move the end segments first in reverse order
     for index in range(len(segments)-1, 0, -1):
@@ -204,6 +223,15 @@ while True:
             # Clear the segments list
             segments.clear()
 
+            # Reset the score
+            score = 0
+
+            # Reset the delay
+            delay = 0.1
+        
+            # Update the score display
+            pen.clear()
+            pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
     time.sleep(delay)
 
